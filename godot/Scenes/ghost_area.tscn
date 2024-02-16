@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1rt7xlu022ne"]
+
+[ext_resource type="Texture2D" uid="uid://cqeli46ewunip" path="res://Assets/ghost01.png" id="1_f6mlh"]
+[ext_resource type="Texture2D" uid="uid://d1yeu0n18e3ab" path="res://Assets/ghost02.png" id="2_e1u24"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qf2ce"]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": ExtResource("1_f6mlh")
+}, {
+"duration": 2.0,
+"texture": ExtResource("2_e1u24")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_12dry"]
+radius = 4.5
+
+[node name="ghost-area" type="Area2D"]
+z_index = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qf2ce")
+animation = &"moving"
+frame_progress = 0.353824
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_12dry")

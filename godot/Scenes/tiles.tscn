@@ -1,0 +1,112 @@
+[gd_scene load_steps=3 format=3 uid="uid://oiucop3rppb5"]
+
+[ext_resource type="Texture2D" uid="uid://c5q4gkfxywe65" path="res://Assets/Arcade - Pac-Man - Maze Parts.png" id="1_5gnff"]
+[ext_resource type="TileSet" uid="uid://dxhhrch8k1kmf" path="res://Scenes/pacman-tiles.tres" id="1_25ede"]
+
+[node name="Tiles" type="TileMap"]
+tile_set = ExtResource("1_25ede")
+format = 2
+
+[node name="00" type="Sprite2D" parent="."]
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(225, 27, 8, 8)
+
+[node name="01" type="Sprite2D" parent="."]
+position = Vector2(8, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(243, 27, 8, 8)
+
+[node name="02" type="Sprite2D" parent="."]
+position = Vector2(16, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(279, 27, 8, 8)
+
+[node name="03" type="Sprite2D" parent="."]
+position = Vector2(24, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(315, 27, 8, 8)
+
+[node name="04" type="Sprite2D" parent="."]
+position = Vector2(32, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(351, 27, 8, 8)
+
+[node name="05" type="Sprite2D" parent="."]
+position = Vector2(40, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(225, 36, 8, 8)
+
+[node name="06" type="Sprite2D" parent="."]
+position = Vector2(48, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(252, 45, 8, 8)
+
+[node name="07" type="Sprite2D" parent="."]
+position = Vector2(56, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(333, 36, 8, 8)
+
+[node name="08" type="Sprite2D" parent="."]
+position = Vector2(64, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(225, 45, 8, 8)
+
+[node name="09" type="Sprite2D" parent="."]
+position = Vector2(72, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(351, 54, 8, 8)
+
+[node name="10" type="Sprite2D" parent="."]
+position = Vector2(80, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(297, 36, 8, 8)
+
+[node name="11" type="Sprite2D" parent="."]
+position = Vector2(88, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(243, 45, 8, 8)
+
+[node name="12" type="Sprite2D" parent="."]
+position = Vector2(96, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(342, 45, 8, 8)
+
+[node name="13" type="Sprite2D" parent="."]
+position = Vector2(104, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(360, 45, 8, 8)
+
+[node name="14" type="Sprite2D" parent="."]
+position = Vector2(112, 0)
+texture = ExtResource("1_5gnff")
+centered = false
+region_enabled = true
+region_rect = Rect2(333, 45, 8, 8)

@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1a88fraeoi2e"]
+
+[ext_resource type="PackedScene" uid="uid://bq3kyx1lwev72" path="res://Scenes/walls.tscn" id="1_dumn2"]
+[ext_resource type="PackedScene" uid="uid://d802jgchv0ya" path="res://Scenes/pacman_area.tscn" id="2_5ouft"]
+[ext_resource type="Script" path="res://Scripts/walls.gd" id="2_sjcjw"]
+[ext_resource type="Script" path="res://Scripts/pacman_controls.gd" id="3_pvrl8"]
+
+[node name="Game" type="Node2D"]
+
+[node name="walls" parent="." instance=ExtResource("1_dumn2")]
+position = Vector2(0, 0)
+script = ExtResource("2_sjcjw")
+
+[node name="pacman-area" parent="." instance=ExtResource("2_5ouft")]
+position = Vector2(12, 12)
+script = ExtResource("3_pvrl8")

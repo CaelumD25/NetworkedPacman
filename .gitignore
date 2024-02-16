@@ -13,3 +13,11 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Rust
+Cargo.lock
+/pacman_server/target/
+
+#idea
+.idea
+/pacman_server/.idea

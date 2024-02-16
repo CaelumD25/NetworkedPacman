@@ -1,0 +1,78 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dxhhrch8k1kmf"]
+
+[ext_resource type="Texture2D" uid="uid://c5q4gkfxywe65" path="res://Assets/Arcade - Pac-Man - Maze Parts.png" id="1_8ql3p"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_knykh"]
+texture = ExtResource("1_8ql3p")
+separation = Vector2i(1, 1)
+texture_region_size = Vector2i(8, 8)
+27:3/0 = 0
+27:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+27:3/0/physics_layer_0/angular_velocity = 0.0
+27:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+35:3/0 = 0
+35:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+35:3/0/physics_layer_0/angular_velocity = 0.0
+35:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+39:3/0 = 0
+39:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+39:3/0/physics_layer_0/angular_velocity = 0.0
+39:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+25:4/0 = 0
+25:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+25:4/0/physics_layer_0/angular_velocity = 0.0
+25:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+28:5/0 = 0
+28:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+28:5/0/physics_layer_0/angular_velocity = 0.0
+28:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+38:4/0 = 0
+38:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+38:4/0/physics_layer_0/angular_velocity = 0.0
+38:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+25:5/0 = 0
+25:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+25:5/0/physics_layer_0/angular_velocity = 0.0
+25:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+39:6/0 = 0
+39:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+39:6/0/physics_layer_0/angular_velocity = 0.0
+39:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+27:5/0 = 0
+27:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+27:5/0/physics_layer_0/angular_velocity = 0.0
+27:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+38:5/0 = 0
+38:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+38:5/0/physics_layer_0/angular_velocity = 0.0
+40:5/0 = 0
+40:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+40:5/0/physics_layer_0/angular_velocity = 0.0
+37:5/0 = 0
+37:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+37:5/0/physics_layer_0/angular_velocity = 0.0
+31:3/0 = 0
+31:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+31:3/0/physics_layer_0/angular_velocity = 0.0
+31:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+33:4/0 = 0
+33:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+33:4/0/physics_layer_0/angular_velocity = 0.0
+33:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+34:4/0 = 0
+34:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+34:4/0/physics_layer_0/angular_velocity = 0.0
+34:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+32:5/0 = 0
+32:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+32:5/0/physics_layer_0/angular_velocity = 0.0
+32:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+25:3/0 = 0
+25:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+25:3/0/physics_layer_0/angular_velocity = 0.0
+25:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+
+[resource]
+tile_size = Vector2i(8, 8)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_knykh")

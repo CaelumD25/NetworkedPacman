@@ -30,7 +30,7 @@ brew install rustup
 ### Networking Idea
 Current networking idea
 
-[![[doc_assets/network_diagram.png]]](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/network_diagram.png)
+![doc_assets/network_diagram.png](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/network_diagram.png)
 
 The current plan is to implent this using [gdextension](https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html) and Godot Rust
 

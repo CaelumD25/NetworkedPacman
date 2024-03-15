@@ -42,6 +42,11 @@ func move_pacman(direction: Vector2, rot: float):
 		position += CELL_SIZE * direction
 		score = walls.eat(position, score)
 
+func ai_pacman(result, response_code, headers, body):
+	player_state.parse(body.get_string_from_utf8())
+	var response = player_state.get_data()
+	direct_pacman(response[0]["pacman"]["dir"])
+
 
 func player_pacman():
 	if Input.is_action_just_pressed("ui_up"):

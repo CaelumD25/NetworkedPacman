@@ -57,6 +57,9 @@ func player_pacman():
 		#move right 
 		direct_pacman("Right")
 		
+func get_location():
+	return walls.map_abs_pos_to_tile(position)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	player_pacman()

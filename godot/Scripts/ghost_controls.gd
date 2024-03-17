@@ -14,6 +14,7 @@ func _ready():
 	var res = walls.maze_to_matrix_representation()
 	for x in range(res.size()):
 		print(res[x])
+	print("")
 
 func current_pos()-> Vector2:
 	return position
@@ -52,6 +53,9 @@ func player_ghost():
 	elif Input.is_action_just_released("move_right"):
 		#move right 
 		direct_ghost("Right")
+
+func get_location():
+	return walls.map_abs_pos_to_tile(position)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

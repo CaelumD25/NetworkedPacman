@@ -6,7 +6,7 @@ extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Replace with function body.
-	var file = FileAccess.open("../IPC.json", FileAccess.WRITE_READ)
+	var file = FileAccess.open("res://IPC.json", FileAccess.READ_WRITE)
 	file.seek(0)
 	assert(file != null)
 	var json_text = file.get_as_text(true).replace("\n","")

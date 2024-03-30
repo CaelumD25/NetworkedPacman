@@ -1,10 +1,14 @@
 # networked_pacman
 A pacman game where both the ghost and pacman can be controlled by a rest api
 
-## TODO
-- [ ] Create a API for integration with other programs
+## Work to be done(TODO)
 - [ ] Handle a game over
 - [ ] Handle a eventual reset(could be a restart from the program driving the API)
+- [ ] Figure out if it's possible to prevent race conditions when calling state after player multiple player movements(Only known issue with the IPC)
+- [ ] Make the main framework for handling the map state, and the locations of the players
+- [ ] Make the A* algorithm to drive the ghost
+- [ ] Make the Minimax algorithm to drive pacman
+
 
 ## Setup
 You'll need [Godot +4.2.1](https://godotengine.org/download/) for the game, and rust +1.76.0
@@ -27,14 +31,14 @@ brew install rustup
 - [Godot rust book](https://godot-rust.github.io/book/index.html)
 - [Learn Rust if you need it](https://www.rust-lang.org/learn)
 
-### IPC is properly implemented!
+## IPC is properly implemented!
 After many headaches and lots of deliberation, we've got a nicely working form of IPC!
 
 Using shared memory as a form of IPC seemed to only cause issues with race conditions, and it's behaviour was neither deterministic, nor as practical as it could have been.
 
 Thanks to some great collaborative brainstorming, we've got a solution that works reliably and simply(Even if it is a little bit convoluted for the application).
 
-#### The new plan
+### The new plan
 The new plan uses 3 independent processes which communicate through networking packets.
 - The first process is the Game, which is the same as before, instead it now polls a relay server to communicate the information it needs to move the players while updating the game state.
 - The second process is the AI process, which is the what decides what the players should be doing given a fresh game state representation.
@@ -50,8 +54,3 @@ Below are some charts to show how each process interacts in different scenarios
 
 Using this new architecture, it is now possible to run unit tests to verify it is all working properly
 
-### Work to be done
-- [ ] Figure out if it's possible to prevent race conditions when calling state after player multiple player movements(Only known issue with the IPC)
-- [ ] Make the main framework for handling the map state, and the locations of the players
-- [ ] Make the A* algorithm to drive the ghost
-- [ ] Make the Minimax algorithm to drive pacman

@@ -42,11 +42,11 @@ The new plan uses 3 independent processes which communicate through networking p
 
 Below are some charts to show how each process interacts in different scenarios
 
-![doc_assets/inv_serv_typical_scenario](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/inv_serv_typical_scenario.png)
+![doc_assets/inv_serv_typical_scenario](https://github.com/CaelumD25/networked_pacman/blob/inverted-client/doc_assets/inv_serv_typical_scenario.png)
 
-![doc_assets/inv_serv_player_movements](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/inv_serv_player_movements.png)
+![doc_assets/inv_serv_player_movements](https://github.com/CaelumD25/networked_pacman/blob/inverted-client/doc_assets/inv_serv_player_movements.png)
 
-![doc_assets/inv_serv_ai_decisions](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/inv_serv_ai_decisions.png)
+![doc_assets/inv_serv_ai_decisions](https://github.com/CaelumD25/networked_pacman/blob/inverted-client/doc_assets/inv_serv_ai_decisions.png)
 
 Using this new architecture, it is now possible to run unit tests to verify it is all working properly
 

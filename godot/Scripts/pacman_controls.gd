@@ -1,6 +1,10 @@
 extends Area2D
 @onready var walls = get_parent().get_node("walls")
+
+# Depending on how we detect the end game state, this ghost-area dependency can be removed
 @onready var ghost = get_parent().get_node("ghost-area")
+
+# GLOBAL VARIABLES for pacman
 var CELL_SIZE = 8
 var score = 0
 var player_state = JSON.new()
@@ -16,12 +20,16 @@ func _process(_delta):
 		pass
 		#get_tree().quit()
 
+# Returns the location of Pacman, rounded to the same value as a tile index in
+# the game state matrix
 func get_current_pos()-> Vector2:
-	return floor(position/Vector2(8,8))
+	return floor(position/Vector2(CELL_SIZE,CELL_SIZE))
 
+# Returns the current score of Pacman for adding to the game state
 func get_score()-> int:
 	return score
 
+# Directs Pacman in a direction as in it faces Pacman in a direction and then moves
 func direct_pacman(dir: String) -> bool:
 	if dir == "Up":
 		#move up 
@@ -41,20 +49,28 @@ func direct_pacman(dir: String) -> bool:
 		return true
 	else:
 		return false
-	
+
+# Does the moving of pacman, if we want to make the map 'infinite' in size
+# We would have to add a condition here to check if the tile is outside of the
+# Tile space(area with painted tiles) and change pacman's position to the other 
+# side
 func move_pacman(direction: Vector2, rot: float):
 	rotation = rot
-	if walls.is_vacant(position + (CELL_SIZE*direction)):
+	if walls.is_vacant(position + (CELL_SIZE*direction)) && position.x-CELL_SIZE > 0:
 		position += CELL_SIZE * direction
 		score = walls.eat(position, score)
 
-func ai_pacman(result, response_code, headers, body):
+# The AI version of player_pacman, this is called when a GET request is made to
+# the relay server. This happens alot and should only happen once for each 
+# instruction delivered by the AI, therefore if a new move instruction has not 
+# been POSTed by the AI, a response code of FORBIDDEN(403) is returned until it
+# has. This function is polled and connected in networking.gd in it's _process
+func ai_pacman(_result, response_code, _headers, body):
 	if response_code != 403:
 		player_state.parse(body.get_string_from_utf8())
 		var response = player_state.get_data()
 		print(response)
 		direct_pacman(response["pacman"]["dir"])
-
 
 func player_pacman():
 	if Input.is_action_just_pressed("ui_up"):

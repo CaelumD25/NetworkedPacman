@@ -27,11 +27,31 @@ brew install rustup
 - [Godot rust book](https://godot-rust.github.io/book/index.html)
 - [Learn Rust if you need it](https://www.rust-lang.org/learn)
 
-### Networking Idea
-Current networking idea
+### IPC is properly implemented!
+After many headaches and lots of deliberation, we've got a nicely working form of IPC!
 
-![doc_assets/network_diagram.png](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/network_diagram.png)
+Using shared memory as a form of IPC seemed to only cause issues with race conditions, and it's behaviour was neither deterministic, nor as practical as it could have been.
 
-The current plan is to implent this using [gdextension](https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html) and Godot Rust
+Thanks to some great collaborative brainstorming, we've got a solution that works reliably and simply(Even if it is a little bit convoluted for the application).
 
-This plan should definitely be changed if some other type of Interprocess Communication can be done in a better way
+#### The new plan
+The new plan uses 3 independent processes which communicate through networking packets.
+- The first process is the Game, which is the same as before, instead it now polls a relay server to communicate the information it needs to move the players while updating the game state.
+- The second process is the AI process, which is the what decides what the players should be doing given a fresh game state representation.
+- The third process is the Relay Intermediate Server, whish is what allows both the Game and AI proceses act as clients, bypassing the issues with godot we faced early on in our project.(This process is started and killed by the Game process)
+
+Below are some charts to show how each process interacts in different scenarios
+
+![doc_assets/inv_serv_typical_scenario](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/inv_serv_typical_scenario.png)
+
+![doc_assets/inv_serv_player_movements](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/inv_serv_player_movements.png)
+
+![doc_assets/inv_serv_ai_decisions](https://github.com/CaelumD25/networked_pacman/blob/main/doc_assets/inv_serv_ai_decisions.png)
+
+Using this new architecture, it is now possible to run unit tests to verify it is all working properly
+
+### Work to be done
+- [ ] Figure out if it's possible to prevent race conditions when calling state after player multiple player movements(Only known issue with the IPC)
+- [ ] Make the main framework for handling the map state, and the locations of the players
+- [ ] Make the A* algorithm to drive the ghost
+- [ ] Make the Minimax algorithm to drive pacman

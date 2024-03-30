@@ -5,6 +5,26 @@ extends HTTPRequest
 var connect_json = JSON.new()
 var api_found = false
 var timer = 0 
+var pid = 0
+
+func _ready():
+	# Create an HTTP request node and connect its completion signal.
+	pid = OS.create_process("python", ["../relay.py", "--port", str(5000)])
+	print("Intermediary relay server running at PID: ", pid)
+	connect_to_api()
+
+func _process(delta):
+	if not api_found and delta > 1000:
+		connect_to_api()
+	timer += delta
+	if timer > 0.01:
+		api_pacman()
+		timer = 0
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		OS.kill(pid)
+		get_tree().quit() # default behavior
 
 func connect_to_api(port=5000):
 	var http_request = HTTPRequest.new()
@@ -25,24 +45,9 @@ func _http_connected_completed(result, response_code, headers, body):
 	if response:
 		if response[0]["connect_code"] == "Imagines3-Payday-Impish":
 			api_found = true
-		
-	# Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
-	print(response)
-	print(body)
-	print("Response ^")
 
-func _ready():
-	# Create an HTTP request node and connect its completion signal.
-	connect_to_api()
 
-func _process(delta):
-	if not api_found and delta > 1000:
-		connect_to_api()
-	timer += delta
-	if timer > 0.01:
-		api_pacman()
-		timer = 0
-	
+
 func api_pacman(port=5000):
 	var pacman_control_request = HTTPRequest.new()
 	add_child(pacman_control_request)
@@ -56,7 +61,6 @@ func api_pacman(port=5000):
 func api_game_state(game_state: Dictionary, port=5000):
 	var game_state_post = HTTPRequest.new()
 	add_child(game_state_post)
-	
 	
 	var json = JSON.stringify(game_state)
 	var headers = ["Content-Type: application/json"]

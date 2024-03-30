@@ -1,13 +1,9 @@
 extends Area2D
 @onready var walls = get_parent().get_node("walls")
 @onready var ghost = get_parent().get_node("ghost-area")
-var direction = Vector2(0,0)
-var SPEED = 0
 var CELL_SIZE = 8
 var score = 0
 var player_state = JSON.new()
-var nonce = 0 
-var ack = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,9 +39,11 @@ func move_pacman(direction: Vector2, rot: float):
 		score = walls.eat(position, score)
 
 func ai_pacman(result, response_code, headers, body):
-	player_state.parse(body.get_string_from_utf8())
-	var response = player_state.get_data()
-	direct_pacman(response[0]["pacman"]["dir"])
+	if response_code != 403:
+		player_state.parse(body.get_string_from_utf8())
+		var response = player_state.get_data()
+		print(response)
+		direct_pacman(response["pacman"]["dir"])
 
 
 func player_pacman():
@@ -63,13 +61,8 @@ func player_pacman():
 		direct_pacman("Right")
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	player_pacman()
 	if position == ghost.current_pos():
 		pass
 		#get_tree().quit()
-	
-	
-	# This can be done better I'm sure
-	
-		

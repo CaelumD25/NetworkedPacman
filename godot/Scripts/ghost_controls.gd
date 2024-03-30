@@ -1,11 +1,10 @@
 extends Area2D
 @onready var walls = get_parent().get_node("walls")
-var direction = Vector2(0,0)
 var SPEED = 0
 var CELL_SIZE = 8
 var score = 0
 var player_state = JSON.new()
-var nonce = 0 
+
 var timer = 0
 
 # Called when the node enters the scene tree for the first time.

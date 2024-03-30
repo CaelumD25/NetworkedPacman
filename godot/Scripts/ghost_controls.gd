@@ -1,8 +1,6 @@
 extends Area2D
 @onready var walls = get_parent().get_node("walls")
-var SPEED = 0
 var CELL_SIZE = 8
-var score = 0
 var player_state = JSON.new()
 
 var timer = 0
@@ -14,8 +12,12 @@ func _ready():
 	for x in range(res.size()):
 		print(res[x])
 
-func current_pos()-> Vector2:
-	return position
+func _process(delta):
+	# Comment out this to disable controlling the ghost manually
+	player_ghost()
+
+func get_current_pos()-> Vector2:
+	return floor(position/Vector2(8,8))
 
 func direct_ghost(dir: String):
 	if dir == "Up":
@@ -35,8 +37,14 @@ func direct_ghost(dir: String):
 
 func move_ghost(direction: Vector2, rot: float):
 	rotation = rot
-	if walls.is_vacant(position + (CELL_SIZE*direction)):
+	if walls.is_vacant(position + (CELL_SIZE * direction)):
 		position += CELL_SIZE * direction
+
+func ai_ghost(result, response_code, headers, body):
+	if response_code != 403:
+		player_state.parse(body.get_string_from_utf8())
+		var response = player_state.get_data()
+		direct_ghost(response["ghost"]["dir"])
 
 func player_ghost():
 	if Input.is_action_just_released("move_up"):
@@ -52,6 +60,4 @@ func player_ghost():
 		#move right 
 		direct_ghost("Right")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	player_ghost()
+

@@ -9,8 +9,18 @@ var player_state = JSON.new()
 func _ready():
 	$AnimatedSprite2D.play("moving")
 
-func current_pos()-> Vector2:
-	return position
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+	player_pacman()
+	if position == ghost.get_current_pos():
+		pass
+		#get_tree().quit()
+
+func get_current_pos()-> Vector2:
+	return floor(position/Vector2(8,8))
+
+func get_score()-> int:
+	return score
 
 func direct_pacman(dir: String) -> bool:
 	if dir == "Up":
@@ -60,9 +70,4 @@ func player_pacman():
 		#move right 
 		direct_pacman("Right")
 		
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	player_pacman()
-	if position == ghost.current_pos():
-		pass
-		#get_tree().quit()
+

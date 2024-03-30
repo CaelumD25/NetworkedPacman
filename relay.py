@@ -14,10 +14,9 @@ game_state = {}
 ai_process_posted = False
 godot_process_posted = False
 
-
 @app.route('/players', methods=['GET', 'POST'])
 def movement():
-    global movement_instructions, ai_process_posted
+    global movement_instructions, ai_process_posted, move_finished
 
     # Only the game process should be requesting get to players, this should not be called by the AI process
     if request.method == 'GET':
@@ -29,6 +28,8 @@ def movement():
     # Only the AI process should be updating the instructions of the players
     elif request.method == 'POST':
         # Receive movement data from Godot game
+        if ai_process_posted:
+            return "Godot hasn't moved yet, ignoring this could result in missed moves. Access denied.", 403
         movement_instructions = request.json
         # Forward movement data to AI process
         # Example: Forwarding movement data to AI process

@@ -15,9 +15,7 @@ def create_graph(maze):
     #TODO Create a object representation of the response
     
     # documentation for this https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.astar.astar_path.html
-    # has a* search already
-
-
+    # has A* search already
     G = nx.Graph()
 
     # Iterate through the maze to add nodes
@@ -25,13 +23,19 @@ def create_graph(maze):
         for col in range(len(maze[row])):
             G.add_node((row, col), value=maze[row][col])  # Add the cell as a node
 
-            # If the left neighbor is accessible, add an edge
-            if is_accessible(maze, row, col-1):
-                G.add_edge((row, col), (row, col-1))
+            # # If the left neighbor is accessible, add an edge
+            # if is_accessible(maze, row, col-1):
+            #     G.add_edge((row, col), (row, col-1))
             
-            # If the upper neighbor is accessible, add an edge
-            if is_accessible(maze, row-1, col):
-                G.add_edge((row, col), (row-1, col))
+            # # If the upper neighbor is accessible, add an edge
+            # if is_accessible(maze, row-1, col):
+            #     G.add_edge((row, col), (row-1, col))
+
+            for d_row, d_col in [(-1, 0), (0, -1), (1, 0), (0, 1)]:  # Up, Left, Down, Right
+                neighbor_row, neighbor_col = row + d_row, col + d_col
+                if (0 <= neighbor_row < len(maze) and  # Row in bounds
+                    0 <= neighbor_col < len(maze[0])):  # Col in bounds
+                        G.add_edge((row, col), (neighbor_row, neighbor_col))
 
     # Optional: Print the graph's nodes and edges to verify
     print("Nodes:", list(G.nodes(data=True)))
@@ -52,24 +56,11 @@ def create_graph(maze):
         else:  # For coins or anything else you might have
             color_map.append('yellow')  # Change 'yellow' to whatever color you like for '2's
 
-    nx.draw(G, pos, with_labels=True, node_color=color_map, cmap=plt.cm.Wistia, node_size=600, font_size=6)
+    nx.draw(G, pos, with_labels=True, node_color=color_map, cmap=plt.cm.Wistia, node_size=100, font_size=6)
     plt.show()
-    # G = nx.Graph()
-    # for r, row in enumerate(maze):
-    #     for c, val in enumerate(row):
-    #         node = (r, c)
-    #         G.add_node(node)
+   
 
-    #         # Check and connect to previous row and column nodes if they're not walls
-    #         if r > 0 and maze[r-1][c] != 1:
-    #             G.add_edge((r-1, c), node)
-    #         if c > 0 and maze[r][c-1] != 1:
-    #             G.add_edge((r, c-1), node)
-
-    # # Optional: Print the graph
-    # print("Nodes:", G.nodes(data=True))
-    # print("Edges:", G.edges())
-    
+    # Back up idea incase you guys hate me -------------
     # # rows, cols = len(maze), len(maze[0])
     # # G = nx.Graph()
     # # G.add_nodes_from(maze)

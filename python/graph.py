@@ -1,16 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-class Node:
-    def __init__(self, tile_id: int, row, col):
-        self.tile_id = tile_id
-        self.row = row
-        self.col = col
-        self.neighbors = []
-
-def is_accessible(maze, row, col):
-    return 0 <= row < len(maze) and 0 <= col < len(maze[0]) and maze[row][col] != 1
-
 def create_graph(maze):   
     # documentation for this https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.astar.astar_path.html
     

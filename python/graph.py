@@ -12,7 +12,6 @@ def is_accessible(maze, row, col):
     return 0 <= row < len(maze) and 0 <= col < len(maze[0]) and maze[row][col] != 1
 
 def create_graph(maze):
-    #TODO Create a object representation of the response
     
     # documentation for this https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.astar.astar_path.html
     # has A* search already
@@ -21,59 +20,16 @@ def create_graph(maze):
     # Iterate through the maze to add nodes
     for row in range(len(maze)):
         for col in range(len(maze[row])):
-            G.add_node((row, col), value=maze[row][col])  # Add the cell as a node
+            G.add_node((row, col), tile_id=maze[row][col], row=row, col=col)  # Add the cell as a node
 
-            # # If the left neighbor is accessible, add an edge
-            # if is_accessible(maze, row, col-1):
-            #     G.add_edge((row, col), (row, col-1))
-            
-            # # If the upper neighbor is accessible, add an edge
-            # if is_accessible(maze, row-1, col):
-            #     G.add_edge((row, col), (row-1, col))
-
+            # add neigherbour edges
             for d_row, d_col in [(-1, 0), (0, -1), (1, 0), (0, 1)]:  # Up, Left, Down, Right
                 neighbor_row, neighbor_col = row + d_row, col + d_col
                 if (0 <= neighbor_row < len(maze) and  # Row in bounds
                     0 <= neighbor_col < len(maze[0])):  # Col in bounds
                         G.add_edge((row, col), (neighbor_row, neighbor_col))
-
-    # Optional: Print the graph's nodes and edges to verify
-    print("Nodes:", list(G.nodes(data=True)))
-    print("Edges:", list(G.edges()))
-
-    plt.figure(figsize=(20, 8))
-
-    pos = {(row, col): (col, -row) for row, col in G.nodes()}  # Position nodes based on their (row, col) to preserve shape
-    values = [G.nodes[node]['value'] for node in G.nodes()]  # Get values for coloring
-
-    # Prepare a color map, black for 0's, blue for 1's, and you can choose for 2's
-    color_map = []
-    for node in G.nodes(data=True):
-        if node[1]['value'] == 0:  # Empty spot
-            color_map.append('grey')
-        elif node[1]['value'] == 1:  # Wall
-            color_map.append('pink')
-        else:  # For coins or anything else you might have
-            color_map.append('yellow')  # Change 'yellow' to whatever color you like for '2's
-
-    nx.draw(G, pos, with_labels=True, node_color=color_map, cmap=plt.cm.Wistia, node_size=100, font_size=6)
-    plt.show()
-   
-
-    # Back up idea incase you guys hate me -------------
-    # # rows, cols = len(maze), len(maze[0])
-    # # G = nx.Graph()
-    # # G.add_nodes_from(maze)
-    # nx.draw_planar(G)
-    # plt.show()
-    # print("Finished create_graph")
-
-    # for x in range(rows):
-    #     for y in range(cols):
-    #         new_node = Node(tile_id = maze[x, y], row = x, col = y)
-    #         G.add_node(new_node)
-            
-                
+    return G
+  
 
 def main():
     maze = [
@@ -111,10 +67,34 @@ def main():
     ]
 
     
-    create_graph(maze)
+    G = create_graph(maze)
 
-def print_graph(graph):
-    print(graph)
+    print_graph(G)
+
+    show_graph(G)
+
+def print_graph(G):
+    print("Nodes:", list(G.nodes(data=True)))
+    print("Edges:", list(G.edges()))
+
+def show_graph(G):
+    plt.figure(figsize=(20, 8))
+
+    pos = {(row, col): (col, -row) for row, col in G.nodes()}  # Position nodes based on their (row, col) to preserve shape
+    values = [G.nodes[node]['tile_id'] for node in G.nodes()]  # Get values for coloring
+
+    # Prepare a color map, black for 0's (Free space), blue for 1's (wall), and yellow for 2's (pellet)
+    color_map = []
+    for node in G.nodes(data=True):
+        if node[1]['tile_id'] == 0:  # Empty spot
+            color_map.append('grey')
+        elif node[1]['tile_id'] == 1:  # Wall
+            color_map.append('pink')
+        else:  # For coins or anything else you might have
+            color_map.append('yellow')  # Change 'yellow' to whatever color you like for '2's
+
+    nx.draw(G, pos, with_labels=True, node_color=color_map, cmap=plt.cm.Wistia, node_size=100, font_size=6)
+    plt.show()
 
 if __name__ == "__main__":
     main()

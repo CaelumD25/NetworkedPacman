@@ -4,6 +4,7 @@ var VACANT_TILE = Vector2i(37, 5)
 var PILL_TILE = Vector2i(38, 5)
 var TILE_SIZE = 8
 
+# Represents tile types
 class TileRepr:
 	var id
 	var type
@@ -16,6 +17,7 @@ class TileRepr:
 		elif type_id == 1:
 			type = "Wall"
 		elif type_id == 2:
+			# Pacman should always be on a 0 or 2
 			type = "Pill"
 		elif type_id == -1:
 			type = "Invalid"
@@ -27,7 +29,16 @@ class TileRepr:
 		return type
 
 
-
+# There could be a better way of determining tile types but here is how I figured
+# it out.
+# Tiles can be defined by their location within the tile atlas, this is something
+# in the godot editor, and it's kinda like the pallet of tiles. Their locations
+# are defined at the top of this file if there is ever a need to change one of
+# them.
+# (A helpful analogy would be imagining a painting and painting pallet; 
+# if you were color blind, you could technically figure out every color on a 
+# painting if you were given the location of where each color came from on the 
+# pallet providing it was labelled)
 func get_tile_type(tile_coord: Vector2i) -> TileRepr:
 	if tile_coord == Vector2i(-1,-1):
 		# Invalid
@@ -42,23 +53,19 @@ func get_tile_type(tile_coord: Vector2i) -> TileRepr:
 		# Wall
 		return TileRepr.new(1)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
 # This function maps the absolute position(players) from the origin to the 
 # number of tiles
 func map_abs_pos_to_tile(pos: Vector2) -> Vector2i:
 	var modified_vector = Vector2i()
-	modified_vector.x = int(pos.x)/TILE_SIZE
-	modified_vector.y = int(pos.y)/TILE_SIZE
+	modified_vector.x = int(pos.x)/float(TILE_SIZE)
+	modified_vector.y = int(pos.y)/float(TILE_SIZE)
 	return modified_vector
 
 # This function gets a TileRepr(Tile Representation) of the tile at the 
 # current absolute position from the orign
 func get_tile_from_abs_pos(pos :Vector2i, layer=0)->TileRepr:
 	var modified_vector = map_abs_pos_to_tile(pos)
-	var atlas_coords = get_cell_atlas_coords(0, modified_vector)
+	var atlas_coords = get_cell_atlas_coords(layer, modified_vector)
 	return get_tile_type(atlas_coords)
 	
 # This funciton says if a tile at a absolute position is 
@@ -93,12 +100,18 @@ func get_map_state():
 		"ghost_location": {
 			"x": 0,
 			"y": 0
-			}
+			},
+		"score": 0
 		}
 	return maze
 
+# Since the tiles in godot are not a matrix, they need to be adapted so that 
+# they can be added to the state
 func maze_to_matrix_representation() -> Array:
-	var mock_position = Vector2i(TILE_SIZE/2,TILE_SIZE/2)
+	var mock_position = Vector2i(
+		floor(TILE_SIZE/2.0),
+		floor(TILE_SIZE/2.0)
+	)
 	var matrix = []
 	var cur_tile_type = -1
 	var row = 0
@@ -108,10 +121,8 @@ func maze_to_matrix_representation() -> Array:
 			cur_tile_type = get_tile_from_abs_pos(mock_position)
 			matrix[row].append(cur_tile_type.get_id())
 			mock_position.x += TILE_SIZE
-		mock_position.x = TILE_SIZE/2
+		mock_position.x = floor(TILE_SIZE/2.0)
 		mock_position.y += TILE_SIZE
 		row += 1
 	return matrix
 	
-func _process(delta):
-	pass

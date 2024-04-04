@@ -21,6 +21,10 @@ window/size/viewport_width=224
 window/size/viewport_height=248
 window/stretch/mode="viewport"
 
+[dotnet]
+
+project/assembly_name="Pacman"
+
 [input]
 
 move_up={

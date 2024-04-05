@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dv332xepoyme2"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="gameover_screen" type="Node2D" parent="."]
+
+[node name="reset_button" type="Button" parent="gameover_screen"]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Sprite2D" type="Sprite2D" parent="gameover_screen/reset_button"]

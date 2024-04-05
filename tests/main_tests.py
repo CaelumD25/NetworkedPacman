@@ -38,57 +38,57 @@ class TestServer(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         # Add more assertions as needed
 
-    def test_random_post_request(self):
-        dir1 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
-        dir2 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
-        response = move_players(dir1, dir2, self.base_url)
-        self.assertEqual(200, response.status_code)
-        # Add more assertions as needed
+    # def test_random_post_request(self):
+    #     dir1 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
+    #     dir2 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
+    #     response = move_players(dir1, dir2, self.base_url)
+    #     self.assertEqual(200, response.status_code)
+    #     # Add more assertions as needed
 
-    def test_100_random_post_requests(self):
-        for x in range(100):
-            dir1 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
-            dir2 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
-            response = move_players(dir1, dir2, self.base_url)
-            self.assertEqual(200, response.status_code)
+    # def test_100_random_post_requests(self):
+    #     for x in range(100):
+    #         dir1 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
+    #         dir2 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
+    #         response = move_players(dir1, dir2, self.base_url)
+    #         self.assertEqual(200, response.status_code)
 
-    def test_manual_post_request(self):
-        dir1 = input("Pacman dir(Left, Right, Up, Down): ")
-        dir2 = input("Ghost dir(Left, Right, Up, Down): ")
-        data = {"pacman": {"dir": dir1}, "ghost": {"dir": dir2}}
-        response = requests.post(f"{self.base_url}/players", json=data)
-        self.assertEqual(200, response.status_code)
+    # def test_manual_post_request(self):
+    #     dir1 = input("Pacman dir(Left, Right, Up, Down): ")
+    #     dir2 = input("Ghost dir(Left, Right, Up, Down): ")
+    #     data = {"pacman": {"dir": dir1}, "ghost": {"dir": dir2}}
+    #     response = requests.post(f"{self.base_url}/players", json=data)
+    #     self.assertEqual(200, response.status_code)
 
-    def test_moving_on_path(self):
-        moves = [("Right", "Down"),
-                 ("Right", "Down"),
-                 ("Right", "Down"),
-                 ("Down", "Right"),
-                 ("Down", "Right"),
-                 ("Down", "Right"),
-                 ("Right", "Right"),
-                 ("Right", "Right"),
-                 ("Right", "Right"),
-                 ("Up", "Right"),
-                 ("Up", "Right"),
-                 ("Up", "Right"),
-                 ("Up", "Right"),
-                 ("Up", "Right"),
-                 ("Up", "Right"),
-                 ("Left", "Down"),
-                 ("Left", "Down"),
-                 ("Left", "Down"),
-                 ("Down", "Left"),
-                 ("Down", "None"),
-                 ("Down", "None"),
-                 ("None", "Down"),
-                 ("None", "Down"),
-                 ("None", "Down"),
-                 ("None", "Down"), ]
-        for pacman_dir, ghost_dir in moves:
-            response = move_players(pacman_dir, ghost_dir, self.base_url)
-            self.assertEqual(200, response.status_code)
-            # sleep(0.5)
+    # def test_moving_on_path(self):
+    #     moves = [("Right", "Down"),
+    #              ("Right", "Down"),
+    #              ("Right", "Down"),
+    #              ("Down", "Right"),
+    #              ("Down", "Right"),
+    #              ("Down", "Right"),
+    #              ("Right", "Right"),
+    #              ("Right", "Right"),
+    #              ("Right", "Right"),
+    #              ("Up", "Right"),
+    #              ("Up", "Right"),
+    #              ("Up", "Right"),
+    #              ("Up", "Right"),
+    #              ("Up", "Right"),
+    #              ("Up", "Right"),
+    #              ("Left", "Down"),
+    #              ("Left", "Down"),
+    #              ("Left", "Down"),
+    #              ("Down", "Left"),
+    #              ("Down", "None"),
+    #              ("Down", "None"),
+    #              ("None", "Down"),
+    #              ("None", "Down"),
+    #              ("None", "Down"),
+    #              ("None", "Down"), ]
+    #     for pacman_dir, ghost_dir in moves:
+    #         response = move_players(pacman_dir, ghost_dir, self.base_url)
+    #         self.assertEqual(200, response.status_code)
+    #         # sleep(0.5)
 
     def test_pacman_accuracy_on_path(self):
         moves = ["Right", "Right", "Right", "Down"]

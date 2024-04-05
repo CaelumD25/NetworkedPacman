@@ -8,7 +8,6 @@
 script = ExtResource("1_27bco")
 
 [node name="gameover_screen" type="Node2D" parent="."]
-visible = false
 
 [node name="reset_button" type="Button" parent="gameover_screen"]
 self_modulate = Color(1, 1, 1, 0)

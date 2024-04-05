@@ -10,6 +10,7 @@ extends Area2D
 var CELL_SIZE = 8
 var score = 0
 var player_state = JSON.new()
+var process_input = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,19 +34,19 @@ func get_score()-> int:
 
 # Directs Pacman in a direction as in it faces Pacman in a direction and then moves
 func direct_pacman(dir: String) -> bool:
-	if dir == "Up":
+	if dir == "Up" and process_input:
 		#move up 
 		move_pacman(Vector2(0,-1), deg_to_rad(-90))
 		return true
-	elif dir == "Down":
+	elif dir == "Down" and process_input:
 		#move down
 		move_pacman(Vector2(0,1), deg_to_rad(90))
 		return true
-	elif dir == "Left":
+	elif dir == "Left" and process_input:
 		#move left 
 		move_pacman(Vector2(-1,0), deg_to_rad(180))
 		return true
-	elif dir == "Right":
+	elif dir == "Right" and process_input:
 		#move right 
 		move_pacman(Vector2(1,0), 0)
 		return true
@@ -88,10 +89,10 @@ func player_pacman():
 	elif Input.is_action_just_pressed("ui_right"):
 		#move right 
 		direct_pacman("Right")
+
+func done():
+	process_input = false
 		
-
-
-
 func _on_ghostarea_area_entered(area):
-	get_tree().paused = true
+	done()
 	ui.on_game_over()

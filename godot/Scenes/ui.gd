@@ -7,7 +7,7 @@ var game_points = 0
 @onready var gameover_screen = $gameover_screen
 
 func _ready():
-	pass
+	gameover_screen.visible = false
 	
 func update_points(points: int):
 	game_points = points
@@ -19,4 +19,5 @@ func on_game_over():
 	
 
 func _on_reset_button_pressed():
+	#get_tree().pause = false
 	get_tree().reload_current_scene()

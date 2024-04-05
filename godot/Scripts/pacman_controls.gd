@@ -4,6 +4,8 @@ extends Area2D
 # Depending on how we detect the end game state, this ghost-area dependency can be removed
 @onready var ghost = get_parent().get_node("ghost-area")
 
+@onready var ui = get_parent().get_node("UI")
+
 # GLOBAL VARIABLES for pacman
 var CELL_SIZE = 8
 var score = 0
@@ -14,10 +16,10 @@ func _ready():
 	$AnimatedSprite2D.play("moving")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
+func _physics_process(_delta):
 	player_pacman()
 	if position == ghost.get_current_pos():
-		pass
+		print("pacman and ghost at same spot")
 		#get_tree().quit()
 
 # Returns the location of Pacman, rounded to the same value as a tile index in
@@ -59,6 +61,7 @@ func move_pacman(direction: Vector2, rot: float):
 	if walls.is_vacant(position + (CELL_SIZE*direction)) && position.x-CELL_SIZE > 0:
 		position += CELL_SIZE * direction
 		score = walls.eat(position, score)
+		ui.update_points(score)
 
 # The AI version of player_pacman, this is called when a GET request is made to
 # the relay server. This happens alot and should only happen once for each 
@@ -87,3 +90,8 @@ func player_pacman():
 		direct_pacman("Right")
 		
 
+
+
+func _on_ghostarea_area_entered(area):
+	get_tree().paused = true
+	ui.on_game_over()

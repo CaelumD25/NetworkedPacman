@@ -21,3 +21,14 @@ Cargo.lock
 #idea
 .idea
 /pacman_server/.idea
+
+/pacman_server/.idea
+
+# Stupid Mac stuff
+.DS_STORE
+
+# Virtual envvironment stuff
+venv/
+
+# Python stuff 
+__pycache__/

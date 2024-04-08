@@ -70,7 +70,8 @@ func ai_pacman(_result, response_code, _headers, body):
 		player_state.parse(body.get_string_from_utf8())
 		var response = player_state.get_data()
 		print(response)
-		direct_pacman(response["pacman"]["dir"])
+		if response:
+			direct_pacman(response["pacman"]["dir"])
 
 func player_pacman():
 	if Input.is_action_just_pressed("ui_up"):

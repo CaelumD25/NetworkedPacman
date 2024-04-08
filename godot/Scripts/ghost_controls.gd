@@ -55,7 +55,8 @@ func ai_ghost(_result, response_code, _headers, body):
 	if response_code != 403:
 		player_state.parse(body.get_string_from_utf8())
 		var response = player_state.get_data()
-		direct_ghost(response["ghost"]["dir"])
+		if response:
+			direct_ghost(response["ghost"]["dir"])
 
 func player_ghost():
 	if Input.is_action_just_released("move_up"):

@@ -1,9 +1,12 @@
+import math
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
-def create_graph(maze):   
+
+def create_graph(maze) -> nx.Graph:
     # documentation for this https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.astar.astar_path.html
-    
+
     # Each node has 3 properties: tile_id, row, and col. I beleive each node can also be referenced using by (row,col)
     # tile_ID:
     #    0 = free space
@@ -21,35 +24,90 @@ def create_graph(maze):
             for d_row, d_col in [(-1, 0), (0, -1), (1, 0), (0, 1)]:  # Up, Left, Down, Right
                 neighbor_row, neighbor_col = row + d_row, col + d_col
                 if (0 <= neighbor_row < len(maze) and  # Row in bounds
-                    0 <= neighbor_col < len(maze[0])):  # Col in bounds
-                        
-                        # This part will create the adjacent node if it has not been created but properties will
-                        # not get added/updated till add_node is called for adjecent node
-                        G.add_edge((row, col), (neighbor_row, neighbor_col))
+                        0 <= neighbor_col < len(maze[0])):  # Col in bounds
+
+                    # This part will create the adjacent node if it has not been created but properties will
+                    # not get added/updated till add_node is called for adjecent node
+                    G.add_edge((row, col), (neighbor_row, neighbor_col))
     return G
+
+
+def create_minimalized_graph(maze: list):
+    G = create_graph(maze)
+    tmp_G = G.copy()
+    for node in G.nodes(data=True):
+        if node[1]["tile_id"] == 1:
+            tmp_G.remove_node(node[0])
+    return tmp_G
+
+
+def convert_to_directions(node_initial, node_final) -> str:
+    initial_x, initial_y = node_initial
+    final_x, final_y = node_final
+    if initial_y < final_y and initial_x == final_x:
+        return "Left"
+    elif initial_y > final_y and initial_x == final_x:
+        return "Right"
+    elif initial_y == final_y and initial_x < final_x:
+        return "Up"
+    elif initial_y == final_y and initial_x > final_x:
+        return "Down"
+    else:
+        return "None"
+
+
+def get_node_given_coordinates(G: nx.Graph, coordinates):
+    x, y = coordinates
+    for i in G.nodes(data=True):
+        if i[1]["row"] == y and i[1]["col"] == x:
+            return i[0]
+
+
+def a_star_directions(graph: nx.Graph, pacman_node, ghost_node):
+    ghost_node = get_node_given_coordinates(graph, ghost_node)
+    pacman_node = get_node_given_coordinates(graph, pacman_node)
+    results = nx.astar_path(graph, pacman_node, ghost_node, a_star_heuristic)
+    directions = []
+    for node in range(len(results) - 1):
+        print(f"Cur Node : {results[node]}, next node {results[node+1]}")
+        direction = convert_to_directions(results[node], results[node+1])
+        print("Direction", direction)
+        directions.append(direction)
+    return directions[::-1]
+
+
+def a_star_heuristic(start_node, target_node) -> float:
+    # Using Euclidean distance
+    initial_x, initial_y = start_node
+    final_x, final_y = target_node
+    return math.sqrt((initial_x - final_x) ** 2 + (initial_y - final_y) ** 2)
+
 
 def print_graph(G):
     print("Nodes:", list(G.nodes(data=True)))
     print("Edges:", list(G.edges()))
 
+
 def show_graph(G):
     plt.figure(figsize=(20, 8))
 
-    pos = {(row, col): (col, -row) for row, col in G.nodes()}  # Position nodes based on their (row, col) to preserve shape
+    pos = {(row, col): (col, -row) for row, col in
+           G.nodes()}  # Position nodes based on their (row, col) to preserve shape
     values = [G.nodes[node]['tile_id'] for node in G.nodes()]  # Get values for coloring
 
     # Prepare a color map, black for 0's (Free space), blue for 1's (wall), and yellow for 2's (pellet)
     color_map = []
     for node in G.nodes(data=True):
-        if node[1]['tile_id'] == 0:    # Empty spot
+        if node[1]['tile_id'] == 0:  # Empty spot
             color_map.append('grey')
         elif node[1]['tile_id'] == 1:  # Wall
             color_map.append('pink')
-        else:                          # pellet
-            color_map.append('yellow')  
+        else:  # pellet
+            color_map.append('yellow')
 
     nx.draw(G, pos, with_labels=True, node_color=color_map, cmap=plt.cm.Wistia, node_size=350, font_size=5)
     plt.show()
+
 
 def main():
     maze = [
@@ -85,10 +143,11 @@ def main():
         [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
-    
+
     G = create_graph(maze)
     print_graph(G)
     show_graph(G)
+
 
 if __name__ == "__main__":
     main()

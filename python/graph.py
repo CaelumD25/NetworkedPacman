@@ -148,6 +148,29 @@ def main():
     print_graph(G)
     show_graph(G)
 
+def find_pellet_locations(G):
+    pellets = [node for node, data in G.nodes(data=True) if data['tile_id'] == 2]
+    return pellets
+
+# This function simulates a greedy choice by Pacman to move towards the nearest pellet.
+# It assumes `G` is a graph representation of the maze, `pacman_location` is a tuple of Pacman's coordinates,
+# and `pellets` is a list of tuples representing the coordinates of all pellets.
+def find_nearest_pellet_path_greedy(G, pacman_location, pellets):
+
+    # Find the nearest pellet by the shortest path length
+    nearest_pellet, shortest_path = None, None
+    pacman_location = get_node_given_coordinates(G, pacman_location)
+    for pellet in pellets:
+        try:
+            path = nx.shortest_path(G, source=pacman_location, target=pellet, method='bellman-ford')
+            if shortest_path is None or len(path) < len(shortest_path):
+                nearest_pellet, shortest_path = pellet, path
+        except nx.NetworkXNoPath:
+            # If there's no path to this pellet, skip it
+            continue
+
+    return shortest_path
+
 
 if __name__ == "__main__":
     main()

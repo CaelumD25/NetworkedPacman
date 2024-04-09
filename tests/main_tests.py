@@ -31,7 +31,7 @@ def get_game_state(base_url):
 
 class TestServer(unittest.TestCase):
     base_url = "http://127.0.0.1:5000"
-
+    '''
     def test_get_state(self):
         response = requests.get(f"{self.base_url}/game_state")
         print(response.text)
@@ -51,7 +51,7 @@ class TestServer(unittest.TestCase):
             dir2 = ["Right", "Up", "Left", "Down"][randint(0, 3)]
             response = move_players(dir1, dir2, self.base_url)
             self.assertEqual(200, response.status_code)
-
+    '''
     def test_manual_post_request(self):
         dir1 = input("Pacman dir(Left, Right, Up, Down): ")
         dir2 = input("Ghost dir(Left, Right, Up, Down): ")

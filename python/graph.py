@@ -199,6 +199,8 @@ def greedy_algorithm(G: nx.Graph, pacman_location, ghost_location):
             weight = float("inf")
         else:
             weight = ((1/path[2]) * ghost_weight)
+            best_path = path[0]
+            break
         if weight < best_weight:
             best_path = path[0]
 

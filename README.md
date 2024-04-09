@@ -1,13 +1,17 @@
 # networked_pacman
 A pacman game where both the ghost and pacman can be controlled by a rest api
 
+## Steps to run
+1. Download Godot 4, and run the project located within the file.
+2. Run main.py to see the AI function, the game must be running within godot for this to work or a JSONDecodeError will be thrown
+
 ## Work to be done(TODO)
-- [ ] Handle a game over
-- [ ] Handle a eventual reset(could be a restart from the program driving the API)
-- [ ] Figure out if it's possible to prevent race conditions when calling state after player multiple player movements(Only known issue with the IPC)
-- [ ] Make the main framework for handling the map state, and the locations of the players
-- [ ] Make the A* algorithm to drive the ghost
-- [ ] Make the Minimax algorithm to drive pacman
+- [x] Handle a game over
+- [x] Handle a eventual reset(could be a restart from the program driving the API)
+- [x] Figure out if it's possible to prevent race conditions when calling state after player multiple player movements(Only known issue with the IPC)
+- [x] Make the main framework for handling the map state, and the locations of the players
+- [x] Make the A* algorithm to drive the ghost
+- [x] Make the Minimax algorithm to drive pacman
 
 
 ## Setup

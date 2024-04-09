@@ -4,18 +4,26 @@ import requests
 import unittest
 import python.graph as graph
 
+moves = 0
+
 
 # Helper function to move the players given a direction, handles timeouts
 def move_players(pacman_dir, ghost_dir, base_url):
+    global moves
     data = {"pacman": {"dir": pacman_dir}, "ghost": {"dir": ghost_dir}}
     response = None
     sent = False
     tries = 0
     sleep(0.1)
-    while not sent and tries < 100:
-        response = requests.post(f"{base_url}/players", json=data)
-        sent = response.status_code == 200
-        tries += 1
+    while not sent:
+        if moves == 0:
+            moves += 1
+            while not sent and tries < 100:
+                response = requests.post(f"{base_url}/players", json=data)
+                sent = response.status_code == 200
+                tries += 1
+    moves -= 1
+
     return response
 
 
@@ -113,9 +121,9 @@ class TestServer(unittest.TestCase):
         graph.print_graph(G)
         self.assertEqual(pacman_location, ghost_location)
 
-
     def test_pacman_navigate(self):
         game_state = get_game_state(self.base_url)
+
 
         maze = game_state["tiles"]
         pacman_location = (game_state["pacman_location"]["x"], game_state["pacman_location"]["y"])
@@ -133,11 +141,11 @@ class TestServer(unittest.TestCase):
 
             dirs = []
             print(path_to_nearest_pellet)
-            for i in range(len(path_to_nearest_pellet)-1):
-                dirs.append(graph.convert_to_directions(path_to_nearest_pellet[i+1], path_to_nearest_pellet[i]))
+            for i in range(len(path_to_nearest_pellet) - 1):
+                dirs.append(graph.convert_to_directions(path_to_nearest_pellet[i + 1], path_to_nearest_pellet[i]))
             print(dirs)
-            for x in dirs[::-1]:
-                sleep(0.9)
+            for x in dirs:
+                sleep(0.1)
                 move_players(x, "None", self.base_url)
                 game_state = get_game_state(self.base_url)
             pacman_location = (game_state["pacman_location"]["x"], game_state["pacman_location"]["y"])
@@ -147,9 +155,30 @@ class TestServer(unittest.TestCase):
         graph.print_graph(G)
         self.assertEqual(1, 1)
 
+    def test_greedy_algo(self):
+        game_state = get_game_state(self.base_url)
+
+        maze = game_state["tiles"]
+        pacman_location = (game_state["pacman_location"]["x"], game_state["pacman_location"]["y"])
+        ghost_location = (game_state["ghost_location"]["x"], game_state["ghost_location"]["y"])
+
+        while game_state["score"] < 9999:
+            G = graph.create_minimalized_graph(maze)
+            path = graph.greedy_algorithm(G, pacman_location, ghost_location)
+            print("Path:", path)
+            for dir in path:
+                sleep(0.5)
+                print("Direction: ", dir)
+                move_players(dir, "None", self.base_url)
+            game_state = get_game_state(self.base_url)
+
+            maze = game_state["tiles"]
+            pacman_location = (game_state["pacman_location"]["x"], game_state["pacman_location"]["y"])
+            ghost_location = (game_state["ghost_location"]["x"], game_state["ghost_location"]["y"])
+
 
 if __name__ == "__main__":
     unittest.main()
 
-# use any search algo to get closest pellet
-#run BFS
+# use any search algo to get the closest pellet
+# run BFS

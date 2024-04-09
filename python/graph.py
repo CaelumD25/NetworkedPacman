@@ -42,15 +42,15 @@ def create_minimalized_graph(maze: list):
 
 
 def convert_to_directions(node_initial, node_final) -> str:
-    initial_x, initial_y = node_initial
+    initial_x, intialx = node_initial
     final_x, final_y = node_final
-    if initial_y < final_y and initial_x == final_x:
+    if intialx < final_y and initial_x == final_x:
         return "Left"
-    elif initial_y > final_y and initial_x == final_x:
+    elif intialx > final_y and initial_x == final_x:
         return "Right"
-    elif initial_y == final_y and initial_x < final_x:
+    elif intialx == final_y and initial_x < final_x:
         return "Up"
-    elif initial_y == final_y and initial_x > final_x:
+    elif intialx == final_y and initial_x > final_x:
         return "Down"
     else:
         return "None"
@@ -69,8 +69,8 @@ def a_star_directions(graph: nx.Graph, pacman_node, ghost_node):
     results = nx.astar_path(graph, pacman_node, ghost_node, a_star_heuristic)
     directions = []
     for node in range(len(results) - 1):
-        print(f"Cur Node : {results[node]}, next node {results[node+1]}")
-        direction = convert_to_directions(results[node], results[node+1])
+        print(f"Cur Node : {results[node]}, next node {results[node + 1]}")
+        direction = convert_to_directions(results[node], results[node + 1])
         print("Direction", direction)
         directions.append(direction)
     return directions[::-1]
@@ -148,28 +148,72 @@ def main():
     print_graph(G)
     show_graph(G)
 
+
 def find_pellet_locations(G):
     pellets = [node for node, data in G.nodes(data=True) if data['tile_id'] == 2]
     return pellets
 
+
 # This function simulates a greedy choice by Pacman to move towards the nearest pellet.
 # It assumes `G` is a graph representation of the maze, `pacman_location` is a tuple of Pacman's coordinates,
 # and `pellets` is a list of tuples representing the coordinates of all pellets.
-def find_nearest_pellet_path_greedy(G, pacman_location, pellets):
-
+def find_nearest_pellet_path_greedy(G, pacman_location, pellets) -> list:
     # Find the nearest pellet by the shortest path length
     nearest_pellet, shortest_path = None, None
     pacman_location = get_node_given_coordinates(G, pacman_location)
+    k = 20
+    best_paths = []
     for pellet in pellets:
         try:
             path = nx.shortest_path(G, source=pacman_location, target=pellet, method='bellman-ford')
-            if shortest_path is None or len(path) < len(shortest_path):
-                nearest_pellet, shortest_path = pellet, path
+            best_paths = maintain_k_list(best_paths, path, k)
         except nx.NetworkXNoPath:
             # If there's no path to this pellet, skip it
             continue
 
-    return shortest_path
+    return best_paths
+
+
+def greedy_algorithm(G: nx.Graph, pacman_location, ghost_location):
+    pellets = find_pellet_locations(G)
+
+    paths_to_nearest_pellets = find_nearest_pellet_path_greedy(G, pacman_location, pellets)
+    # Assert to check paths
+    assert (len(paths_to_nearest_pellets) <= 20)
+
+    candidates = []
+    for path in paths_to_nearest_pellets:
+        pellet_node = path[-1]
+        ghost_node = get_node_given_coordinates(G, ghost_location)
+        cur_manhattan_distance = math.fabs(ghost_node[0] - pellet_node[0]) + math.fabs(ghost_node[1] - pellet_node[1])
+        path_len = len(path)
+        candidates.append([path, path_len, cur_manhattan_distance])
+    #TODO Decision
+
+    ghost_weight = 27
+    path_len_weight = 1
+    best_weight = float("inf")
+    best_path = []
+    for path in candidates:
+        if path[2] == 0:
+            weight = float("inf")
+        else:
+            weight = ((1/path[2]) * ghost_weight)
+        if weight < best_weight:
+            best_path = path[0]
+
+    directions = []
+    for node in range(len(best_path) - 1):
+        direction = convert_to_directions(best_path[node+1], best_path[node])
+        directions.append(direction)
+    # TODO Check the direction
+    return directions
+
+
+def maintain_k_list(ls: list, new_entry: list, k: int) -> list:
+    ls.append(new_entry)
+    ls = sorted(ls, key=len)
+    return ls[0:k]
 
 
 if __name__ == "__main__":

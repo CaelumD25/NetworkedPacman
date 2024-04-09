@@ -56,7 +56,7 @@ func direct_pacman(dir: String) -> bool:
 # side
 func move_pacman(direction: Vector2, rot: float):
 	rotation = rot
-	if walls.is_vacant(position + (CELL_SIZE*direction)) && position.x-CELL_SIZE > 0:
+	if walls.is_vacant(position + (CELL_SIZE*direction)):
 		position += CELL_SIZE * direction
 		score = walls.eat(position, score)
 
